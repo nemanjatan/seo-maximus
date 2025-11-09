@@ -136,7 +136,9 @@ function renderResult(job) {
     ? `
       <article class="result-section">
         <h3>Prefetch Tag</h3>
-        <textarea class="code-block" readonly>${result.prefetch_tag}</textarea>
+        <p class="helper">Paste this inside your <code>&lt;head&gt;</code> to hint the browser to warm up the hero image.</p>
+        <button type="button" class="copy-btn" data-target="prefetch-tag">Copy Prefetch Tag</button>
+        <textarea id="prefetch-tag" class="code-block" readonly>${result.prefetch_tag}</textarea>
       </article>
     `
     : "";
@@ -164,12 +166,14 @@ function attachCopyHandlers() {
       if (!textarea) return;
       try {
         await navigator.clipboard.writeText(textarea.value);
+        const original = button.textContent;
         button.textContent = "Copied!";
-        setTimeout(() => (button.textContent = "Copy Image Data URL"), 1600);
+        setTimeout(() => (button.textContent = original), 1600);
       } catch (err) {
         console.error(err);
+        const original = button.textContent;
         button.textContent = "Copy failed";
-        setTimeout(() => (button.textContent = "Copy Image Data URL"), 1600);
+        setTimeout(() => (button.textContent = original), 1600);
       }
     });
   });
