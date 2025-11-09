@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.api import router as api_router
 from app.api.dependencies import get_auth_dependency
@@ -29,6 +30,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class ForwardedProtoMiddleware(BaseHTTPMiddleware):
+    """Respect X-Forwarded-Proto so generated URLs use the correct scheme behind proxies."""
+
+    async def dispatch(self, request, call_next):
+        forwarded_proto = request.headers.get("x-forwarded-proto")
+        if forwarded_proto:
+            request.scope["scheme"] = forwarded_proto
+        return await call_next(request)
+
+
+app.add_middleware(ForwardedProtoMiddleware)
 
 app.include_router(api_router.api_router, prefix=settings.api_v1_prefix)
 
