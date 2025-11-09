@@ -164,6 +164,7 @@ button[type="submit"]:disabled {
 }
 
 .result-section {
+  max-width: 918px;
   background: rgba(12, 13, 17, 0.65);
   padding: 1.25rem;
   border-radius: 0.75rem;
@@ -188,6 +189,10 @@ button[type="submit"]:disabled {
 
 .helper code {
   font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+}
+
+code {
+  word-break: break-all;
 }
 
 .optimized-images {
@@ -229,6 +234,7 @@ textarea.code-block {
   font-size: 0.9rem;
   padding: 0.85rem;
   resize: vertical;
+  max-width: 891px;
 }
 
 footer {
