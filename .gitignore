@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Pipenv / poetry
+*.lock
+pip-wheel-metadata/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+nosetests.xml
+coverage.xml
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# dotenv environment variables
+.env
+.env.*
+*.env
+!.env.example
+
+# Local config / credentials
+*.local
+*.secret
+secrets.json
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS / Linux / Windows artifacts
+.DS_Store
+Thumbs.db

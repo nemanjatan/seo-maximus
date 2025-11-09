@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/dev.Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - ../.env
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/seo_maximus
+      TINYPNG_API_KEY: ${TINYPNG_API_KEY:-}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:-dev-token}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../app:/workspace/app
+      - ../docs:/workspace/docs
+      - ../tests:/workspace/tests
+      - ../pyproject.toml:/workspace/pyproject.toml
+      - ../README.md:/workspace/README.md
+
+  worker:
+    build:
+      context: ..
+      dockerfile: docker/dev.Dockerfile
+    command: celery -A app.worker.celery_app worker --loglevel=info --concurrency=2
+    env_file:
+      - ../.env
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/seo_maximus
+      TINYPNG_API_KEY: ${TINYPNG_API_KEY:-}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:-dev-token}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../app:/workspace/app
+      - ../docs:/workspace/docs
+      - ../tests:/workspace/tests
+      - ../pyproject.toml:/workspace/pyproject.toml
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: seo_maximus
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+

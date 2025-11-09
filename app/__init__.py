@@ -1,0 +1,2 @@
+"""SEO Maximus backend package."""
+
