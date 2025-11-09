@@ -1,7 +1,10 @@
 """FastAPI application entrypoint."""
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from app.api import router as api_router
 from app.api.dependencies import get_auth_dependency
@@ -28,6 +31,16 @@ app.add_middleware(
 )
 
 app.include_router(api_router.api_router, prefix=settings.api_v1_prefix)
+
+templates = Jinja2Templates(directory="app/web/templates")
+app.mount("/static", StaticFiles(directory="app/web/static"), name="static")
+
+
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request) -> HTMLResponse:
+    """Render the lightweight frontend."""
+
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/healthz", tags=["health"])

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEO Maximus MVP</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1>SEO Maximus – Performance Optimizer</h1>
+      <p>Submit a page to detect the above-the-fold image and convert it to optimized formats.</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <form id="optimize-form">
+          <div class="field">
+            <label for="target_url">Target Page URL</label>
+            <input
+              type="url"
+              id="target_url"
+              name="target_url"
+              placeholder="https://example.com"
+              required
+            />
+            <small>The page we’ll scan for the hero image (mobile viewport).</small>
+          </div>
+
+          <details class="advanced">
+            <summary>Advanced options</summary>
+            <div class="field">
+              <label for="source_url">Manual Hero Image URL (optional)</label>
+              <input
+                type="url"
+                id="source_url"
+                name="source_url"
+                placeholder="https://cdn.example.com/hero.jpg"
+              />
+              <small>Provide the exact image to optimize if you want to skip automatic above-the-fold detection.</small>
+            </div>
+            <div class="field">
+              <label for="formats">Output Formats</label>
+              <select id="formats" name="formats" multiple>
+                <option value="webp" selected>WebP</option>
+                <option value="avif">AVIF</option>
+                <option value="jpeg">JPEG</option>
+                <option value="png">PNG</option>
+              </select>
+              <small>Hold Cmd/Ctrl to select multiple formats.</small>
+            </div>
+            <div class="field checkbox">
+              <input type="checkbox" id="prefetch" name="prefetch" checked />
+              <label for="prefetch">Generate prefetch tag</label>
+            </div>
+          </details>
+
+          <button type="submit" id="submit-btn">Optimize</button>
+          <div id="status" role="status"></div>
+        </form>
+      </section>
+
+      <section id="results" class="card hidden">
+        <h2>Results</h2>
+        <div id="result-body"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built for the SEO Maximus MVP. API endpoints documented at <a href="/docs">/docs</a>.</p>
+    </footer>
+
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+  </body>
+</html>
+
