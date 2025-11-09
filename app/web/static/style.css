@@ -47,6 +47,7 @@ main {
 }
 
 .card {
+  max-width: 960px;
   background: color-mix(in srgb, var(--card) 92%, transparent);
   padding: 1.5rem;
   border-radius: 1rem;
